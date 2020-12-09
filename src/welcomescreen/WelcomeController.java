@@ -1,11 +1,13 @@
 package welcomescreen;
 
 import Main.MainController;
+import Model.Model;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +19,10 @@ import java.util.logging.Logger;
 public class WelcomeController implements Initializable {
 
     private Stage stage;
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField password;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -35,7 +41,7 @@ public class WelcomeController implements Initializable {
             WelcomeController ctrl = fxmlLoader.getController();
             ctrl.setStage(stage);
 
-            stage.setTitle("Welcome");
+            stage.setTitle("LoginScreen");
             stage.setScene(new Scene(root, 400, 400));
             stage.show();
         }
@@ -47,14 +53,22 @@ public class WelcomeController implements Initializable {
         }
     }
 
-
     @FXML
-    private void next() {
-        //navigate from welcome screen to main screen
-        System.out.println("Navigation started ...");
+    public void login() {
+        Model model = new Model();
 
-        MainController.show(new Stage(), "Hello from Welcome Controller!");
+        String usrName = username.getText();
+        String pwd = password.getText();
 
-        stage.close();
+        boolean loginProvided = model.isCorrectLogin(usrName, pwd);
+
+        if(loginProvided == true) {
+            System.out.println("Login successful ...");
+
+            MainController.show(new Stage(),"Welcome");
+            stage.close();
+        }
+        else
+            System.out.println("Login was unsuccessful");
     }
 }
